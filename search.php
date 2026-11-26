@@ -8,17 +8,22 @@ if ($conn->connect_error) {
 }
 $conn->set_charset('utf8mb4');
 
-$searchTerm = isset($_GET['q']) && is_string($_GET['q']) ? trim($_GET['q']) : '';
+// Store user's input
+if (isset($_GET['q']) && is_string($_GET['q'])) {
+    $searchTerm = trim($_GET['q']);
+} else {
+    $searchTerm = '';
+}
 
+// Retreive all jobs if search bar empty
 if ($searchTerm === '') {
-    // An empty search shows all available jobs.
     $result = $conn->query('SELECT * FROM jobs ORDER BY job_reference');
     if (!$result) {
         die('Search failed: ' . htmlspecialchars($conn->error, ENT_QUOTES, 'UTF-8'));
     }
 } else {
-    // Treat apostrophes, percent signs and underscores as ordinary search characters.
-    // The ! character is used as the LIKE escape character.
+    // Treat apostrophes, percent signs and underscores as ordinary search characters
+    // The ! character is used as the LIKE escape character
     $literalTerm = str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $searchTerm);
     $searchValue = '%' . $literalTerm . '%';
 
@@ -64,7 +69,7 @@ if ($searchTerm === '') {
         <?php endif; ?>
     </section>
 
-    <!-- Uses the same job-listing HTML as jobs.php. -->
+    <!-- Display job listings dynamically -->
     <?php displayJobListings($result); ?>
 </main>
 
