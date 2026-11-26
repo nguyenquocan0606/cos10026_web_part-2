@@ -1,0 +1,24 @@
+DROP TABLE IF EXISTS eoi;
+
+CREATE TABLE eoi (
+  EOInumber INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  job_reference VARCHAR(5) NOT NULL,
+  first_name VARCHAR(20) NOT NULL,
+  last_name VARCHAR(20) NOT NULL,
+  date_of_birth DATE NOT NULL,
+  gender VARCHAR(20) NOT NULL,
+  street_address VARCHAR(40) NOT NULL,
+  suburb VARCHAR(40) NOT NULL,
+  state VARCHAR(3) NOT NULL,
+  postcode VARCHAR(4) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  phone VARCHAR(12) NOT NULL,
+  skill1 VARCHAR(50) NULL,
+  skill2 VARCHAR(50) NULL,
+  skill3 VARCHAR(50) NULL,
+  skill4 VARCHAR(50) NULL,
+  skill5 VARCHAR(50) NULL,
+  other_skills TEXT NULL,
+  status ENUM('New', 'Current', 'Final') NOT NULL DEFAULT 'New',
+  PRIMARY KEY (EOInumber)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

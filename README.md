@@ -39,8 +39,8 @@ Part 2 turns the static Part 1 site into a dynamic PHP and MySQL web application
 - `index.php`: company introduction, hiring process and open jobs from the database. *(planned)*
 - `jobs.php`: job descriptions loaded from the `jobs` table. *(planned)*
 - `search.php`: job search results from the header search bar. *(planned)*
-- `apply.php`: application form posting to `process_eoi.php`; browser validation is disabled. *(planned)*
-- `process_eoi.php`: validates and sanitises the application on the server, creates the `eoi` table if missing, saves the EOI and shows its EOInumber. Cannot be opened directly. *(planned)*
+- `apply.php`: application form posting to `process_eoi.php`; browser validation is disabled, and server-side errors return beside the relevant fields with submitted values preserved.
+- `process_eoi.php`: validates the application on the server, verifies the job reference against the `jobs` table, creates the `eoi` table if missing, saves the EOI and shows its EOInumber. Cannot be opened directly.
 - `about.php`: team details and Part 1 and Part 2 contributions loaded from the `about` table. *(planned)*
 - `login.php` / `logout.php`: manager sign-in and sign-out, with a temporary lock after 3 failed attempts. *(planned)*
 - `manage.php`: login-protected HR page to list EOIs (all, by job reference, by first and/or last name), change an EOI's status, delete all EOIs for a job reference, and sort results. *(planned)*
@@ -55,7 +55,7 @@ Part 2 turns the static Part 1 site into a dynamic PHP and MySQL web application
 
 | Table | Purpose |
 | --- | --- |
-| `eoi` | Submitted applications: one column per apply-form field, plus `status` (New, Current, Final; default New). *(planned)* |
+| `eoi` | Submitted applications: applicant details, five skill columns, other skills and `status` (New, Current, Final; default New). Source: [`sql/eoi.sql`](sql/eoi.sql) |
 | `jobs` | Job listings shown on the Jobs, Home and search pages. *(planned)* |
 | `about` | Team members, fun facts and Part 1 and Part 2 contributions. Source: [`sql/about.sql`](sql/about.sql) |
 | `users` | Manager accounts: unique username, bcrypt password hash and lockout columns. Source: [`sql/users.sql`](sql/users.sql) |
