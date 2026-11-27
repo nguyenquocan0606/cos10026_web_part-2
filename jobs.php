@@ -36,7 +36,7 @@ if (!$result) {
         <h1 id="jobs-heading">Build a more inclusive future for learning</h1>
         <p>At Edbridge, we develop digital learning tools that help people access education in flexible and inclusive ways. Join our team to create online experiences that support learners and educators.</p>
         <p>Explore our current opportunities below and review the responsibilities and requirements before applying.</p>
-        <a class="jobs-apply-link" href="apply.html">View application form</a>
+        <a class="jobs-apply-link" href="apply.php">View application form</a>
     </section>
 
     <!-- Sidebar -->
@@ -50,7 +50,7 @@ if (!$result) {
             <li>Note the five-character job reference.</li>
             <li>Complete the application form.</li>
         </ol>
-        <p><a href="apply.html">Continue to apply</a></p>
+        <p><a href="apply.php">Continue to apply</a></p>
     </aside>
 
     <!-- Displaying job listings dynamically -->
@@ -91,8 +91,8 @@ if (!$result) {
                 <h3 id="quick-links-heading">Quick links</h3>
                 <ul>
                     <li><a href="jobs.php">Explore jobs</a></li>
-                    <li><a href="apply.html">Apply for a role</a></li>
-                    <li><a href="about.html#members-heading">Meet the team</a></li>
+                    <li><a href="apply.php">Apply for a role</a></li>
+                    <li><a href="about.php#members-heading">Meet the team</a></li>
                 </ul>
             </section>
         </div>

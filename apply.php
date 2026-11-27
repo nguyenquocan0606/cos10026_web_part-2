@@ -61,7 +61,7 @@ if (!is_string($selectedJob) || !preg_match('/^[A-Za-z0-9]{5}$/', $selectedJob))
 <body class="apply-page">
   <header>
     <div class="container">
-      <a href="index.html" class="Edbridge">
+      <a href="index.php" class="Edbridge">
         <span class="brand-logo"><img src="img/logo.webp" alt="" width="1024" height="1024"></span>
         <span>Edbridge</span>
       </a>
@@ -70,7 +70,7 @@ if (!is_string($selectedJob) || !preg_match('/^[A-Za-z0-9]{5}$/', $selectedJob))
         <span class="slider"></span>
           Light Mode
       </label>
-      <form class="a1_search" action="jobs.html" method="get" role="search">
+      <form class="a1_search" action="search.php" method="get" role="search">
         <label for="a1_search_input">Search jobs</label>
         <div class="a1_search_row">
           <input type="search" id="a1_search_input" name="q" placeholder="Search jobs...">
@@ -79,10 +79,10 @@ if (!is_string($selectedJob) || !preg_match('/^[A-Za-z0-9]{5}$/', $selectedJob))
       </form>
       <nav aria-label="Main">
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="jobs.html">Jobs</a></li>
+          <li><a href="index.php">Home</a></li>
+          <li><a href="jobs.php">Jobs</a></li>
           <li><a href="apply.php" aria-current="page">Apply</a></li>
-          <li><a href="about.html">About us</a></li>
+          <li><a href="about.php">About us</a></li>
         </ul>
       </nav>
     </div>
@@ -335,7 +335,7 @@ if (!is_string($selectedJob) || !preg_match('/^[A-Za-z0-9]{5}$/', $selectedJob))
     <div class="footer-inner">
       <div class="footer-columns">
         <div>
-          <a href="index.html" class="Edbridge">
+          <a href="index.php" class="Edbridge">
             <span class="brand-logo"><img src="img/logo.webp" alt="" width="1024" height="1024" loading="lazy"></span>
             <span>Edbridge</span>
           </a>
@@ -354,9 +354,9 @@ if (!is_string($selectedJob) || !preg_match('/^[A-Za-z0-9]{5}$/', $selectedJob))
         <section aria-labelledby="quick-links-heading">
           <h3 id="quick-links-heading">Quick links</h3>
           <ul>
-            <li><a href="jobs.html">Explore jobs</a></li>
+            <li><a href="jobs.php">Explore jobs</a></li>
             <li><a href="apply.php">Apply for a role</a></li>
-            <li><a href="about.html#members-heading">Meet the team</a></li>
+            <li><a href="about.php#members-heading">Meet the team</a></li>
           </ul>
         </section>
       </div>

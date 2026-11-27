@@ -163,7 +163,7 @@ try {
             <?php endif; ?>
 
           </div>
-          <a class="a1_meet_team" href="about.html">
+          <a class="a1_meet_team" href="about.php">
             Meet the team
           </a>
         </div>
@@ -345,8 +345,8 @@ try {
           <h3 id="quick-links-heading">Quick links</h3>
           <ul>
             <li><a href="jobs.php">Explore jobs</a></li>
-            <li><a href="apply.html">Apply for a role</a></li>
-            <li><a href="about.html#members-heading">Meet the team</a></li>
+            <li><a href="apply.php">Apply for a role</a></li>
+            <li><a href="about.php#members-heading">Meet the team</a></li>
             <li>
               <a href="mailto:careers@edbridge.example">
                 careers@edbridge.example

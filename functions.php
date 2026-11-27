@@ -69,7 +69,7 @@ function displayJobListings(mysqli_result $jobs, bool $compact = false): void
         $safeDescription = jobEscape($description);
         $jobId = 'job-' . preg_replace('/[^A-Za-z0-9_-]/', '-', $reference);
         $safeJobId = jobEscape($jobId);
-        $applyUrl = 'apply.html?job=' . rawurlencode($reference);
+        $applyUrl = 'apply.php?job=' . rawurlencode($reference);
         $safeApplyUrl = jobEscape($applyUrl);
 
         if ($compact) {

@@ -59,13 +59,15 @@
                 </li>
 
                 <li>
-                    <a href="apply.html">
+                    <a href="apply.php"
+                        <?php if ($currentPage == 'apply.php') echo 'aria-current="page"'; ?>>
                         Apply
                     </a>
                 </li>
 
                 <li>
-                    <a href="about.html">
+                    <a href="about.php"
+                        <?php if ($currentPage == 'about.php') echo 'aria-current="page"'; ?>>
                         About us
                     </a>
                 </li>
