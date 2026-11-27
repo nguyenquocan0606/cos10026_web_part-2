@@ -7,36 +7,29 @@
  * `about` table (sql/about.sql), so a change in the database shows up
  * in both places. Everything else on the page is static.
  */
-require_once __DIR__ . '/settings.php';
-
-/** Escape a database value before putting it in the HTML. */
-function about_h($value): string
-{
-    return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
-}
+require_once __DIR__ . '/functions.php';
 
 $members = [];
-$loadError = '';
+$loadError = 'Team details are currently unavailable. Please try again later.';
 
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-try {
-    $conn = new mysqli($host, $user, $pwd, $sql_db);
-    $conn->set_charset('utf8mb4');
-
+$conn = dbConnect();
+if ($conn) {
     $result = $conn->query(
         'SELECT full_name, student_id, part1_contribution, part2_contribution,
                 quote, dream_job, dream_job_icon, coding_snack, hometown
          FROM about
          ORDER BY display_order'
     );
-    while ($row = $result->fetch_assoc()) {
-        $members[] = $row;
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $members[] = $row;
+        }
+        $result->free();
+        $loadError = '';
+    } else {
+        error_log('about.php could not load team members: ' . $conn->error);
     }
-    $result->free();
     $conn->close();
-} catch (mysqli_sql_exception $e) {
-    error_log('about.php could not load team members: ' . $e->getMessage());
-    $loadError = 'Team details are currently unavailable. Please try again later.';
 }
 ?>
 <!DOCTYPE html>
@@ -96,18 +89,18 @@ try {
       <h2 id="members-heading">Meet the team</h2>
       <p>Each member brings a different contribution to our shared website.</p>
       <?php if ($loadError !== ''): ?>
-        <p><?= about_h($loadError) ?></p>
+        <p><?= safeOutput($loadError) ?></p>
       <?php else: ?>
         <!-- Each definition pairs a member with their contributions and quote, loaded from the about table. -->
         <dl class="member-list">
           <?php foreach ($members as $member): ?>
             <div class="member-card">
-              <dt><?= about_h($member['full_name']) ?></dt>
+              <dt><?= safeOutput($member['full_name']) ?></dt>
               <dd>
-                <p class="student-id">Student ID: <?= about_h($member['student_id']) ?></p>
-                <p><strong>Part 1 contributions:</strong> <?= about_h($member['part1_contribution']) ?></p>
-                <p><strong>Part 2 contributions:</strong> <?= about_h($member['part2_contribution']) ?></p>
-                <p class="quote-content"><?= about_h($member['quote']) ?></p>
+                <p class="student-id">Student ID: <?= safeOutput($member['student_id']) ?></p>
+                <p><strong>Part 1 contributions:</strong> <?= safeOutput($member['part1_contribution']) ?></p>
+                <p><strong>Part 2 contributions:</strong> <?= safeOutput($member['part2_contribution']) ?></p>
+                <p class="quote-content"><?= safeOutput($member['quote']) ?></p>
               </dd>
             </div>
           <?php endforeach; ?>
@@ -127,7 +120,7 @@ try {
       <h2 id="facts-heading">Beyond the code</h2>
       <p id="facts-help">Our personal fun facts are presented below.</p>
       <?php if ($loadError !== ''): ?>
-        <p><?= about_h($loadError) ?></p>
+        <p><?= safeOutput($loadError) ?></p>
       <?php else: ?>
         <div class="table-scroll" role="region" aria-labelledby="facts-heading" aria-describedby="facts-help" tabindex="0">
           <table class="fun-facts">
@@ -143,10 +136,10 @@ try {
             <tbody>
               <?php foreach ($members as $member): ?>
                 <tr>
-                  <th scope="row"><?= about_h($member['full_name']) ?></th>
-                  <td><?= about_h(trim($member['dream_job_icon'] . ' ' . $member['dream_job'])) ?></td>
-                  <td><?= about_h($member['coding_snack']) ?></td>
-                  <td><?= about_h($member['hometown']) ?></td>
+                  <th scope="row"><?= safeOutput($member['full_name']) ?></th>
+                  <td><?= safeOutput(trim($member['dream_job_icon'] . ' ' . $member['dream_job'])) ?></td>
+                  <td><?= safeOutput($member['coding_snack']) ?></td>
+                  <td><?= safeOutput($member['hometown']) ?></td>
                 </tr>
               <?php endforeach; ?>
             </tbody>
@@ -186,7 +179,7 @@ try {
               <th scope="row">1. Shared parts</th>
               <td>settings.php, shared functions, header, navigation and footer includes; convert pages to PHP (KH-1 to KH-7)</td>
               <td>Nguyen Quoc An</td>
-              <td>In progress</td>
+              <td>Done</td>
             </tr>
             <tr>
               <th scope="row">2. Apply and EOI</th>
@@ -216,13 +209,13 @@ try {
               <th scope="row">5. Manage page</th>
               <td>Login-protected manage.php: list, filter, sort, change status and delete EOIs (MNG-1 to MNG-7)</td>
               <td>Nguyen Quoc An</td>
-              <td>To do</td>
+              <td>Done</td>
             </tr>
             <tr>
               <th scope="row">6. Test and submit</th>
               <td>Final SQL file, full test on an empty database, link and validator check, styling review (NOP-2 to NOP-5)</td>
               <td>Whole team</td>
-              <td>To do</td>
+              <td>In progress</td>
             </tr>
             <tr>
               <th scope="row">6. Test and submit</th>
@@ -248,43 +241,6 @@ try {
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-columns">
-        <div>
-          <a href="index.php" class="Edbridge">
-            <span class="brand-logo"><img src="img/logo.webp" alt="" width="1024" height="1024" loading="lazy"></span>
-            <span>Edbridge</span>
-          </a>
-          <p class="footer-tagline">Learn a language. Open a world.</p>
-        </div>
-
-        <section aria-labelledby="project-links-heading">
-          <h3 id="project-links-heading">Project</h3>
-          <ul>
-            <li><a href="https://soulknightprequel15.atlassian.net/jira/software/projects/CGW/boards/3?filter=&amp;groupBy=none">Jira board</a></li>
-            <li><a href="https://github.com/nguyenquocan0606/cos10026_web">GitHub repository</a></li>
-            <li><a href="https://nguyenquocan0606.github.io/cos10026_web/">Live site</a></li>
-          </ul>
-        </section>
-
-        <section aria-labelledby="quick-links-heading">
-          <h3 id="quick-links-heading">Quick links</h3>
-          <ul>
-            <li><a href="jobs.php">Explore jobs</a></li>
-            <li><a href="apply.php">Apply for a role</a></li>
-            <li><a href="about.php#members-heading">Meet the team</a></li>
-          </ul>
-        </section>
-      </div>
-
-      <section aria-labelledby="credits-heading">
-        <h3 id="credits-heading">GenAI sources and credits</h3>
-        <p><a href="https://openai.com/codex/">OpenAI Codex</a> assisted with drafting and editing webpage content and CSS logo cropping. Team details and task information were supplied by W3bb. The <a href="img/logo.webp">Edbridge logo and brand intro video</a> were generated using Gemini Argon and supplied by the team.</p>
-      </section>
-
-      <p class="footer-copyright">&copy; 2026 Edbridge &mdash; a fictional company created by W3bb for the COS10026 Web Technology Project, Swinburne University of Technology.</p>
-    </div>
-  </footer>
+  <?php include __DIR__ . '/footer.inc'; ?>
 </body>
 </html>

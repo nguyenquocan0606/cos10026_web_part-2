@@ -8,7 +8,7 @@ Part 2 turns the static Part 1 site into a dynamic PHP and MySQL web application
 
 ## Project links
 
-- [GitHub repository](https://github.com/nguyenquocan0606/cos10026_web)
+- [GitHub repository](https://github.com/nguyenquocan0606/cos10026_web_part-2)
 - [Jira board](https://soulknightprequel15.atlassian.net/jira/software/projects/CGW/boards/3)
 - [Part 1 live site](https://nguyenquocan0606.github.io/cos10026_web/) (static HTML version; GitHub Pages cannot run PHP)
 
@@ -16,7 +16,7 @@ Part 2 turns the static Part 1 site into a dynamic PHP and MySQL web application
 
 1. Install XAMPP (or another local server with PHP and MySQL) and start Apache and MySQL.
 2. Copy the `project2/` folder into the server's web root (for XAMPP: `htdocs/`).
-3. In phpMyAdmin (`http://localhost/phpmyadmin`), create the database named in `settings.php` and import the project's `.sql` file.
+3. In phpMyAdmin (`http://localhost/phpmyadmin`), create the database named in `settings.php` (`cos10026_web`) and import [`sql/cos10026_web.sql`](sql/cos10026_web.sql).
 4. Open `http://localhost/project2/index.php`.
 
 `settings.php` connects as `root` with **no password**, as the brief requires.
@@ -36,37 +36,37 @@ Part 2 turns the static Part 1 site into a dynamic PHP and MySQL web application
 
 ### Pages
 
-- `index.php`: company introduction, hiring process and open jobs from the database. *(planned)*
-- `jobs.php`: job descriptions loaded from the `jobs` table. *(planned)*
-- `search.php`: job search results from the header search bar. *(planned)*
-- `apply.php`: application form posting to `process_eoi.php`; browser validation is disabled. *(planned)*
-- `process_eoi.php`: validates and sanitises the application on the server, creates the `eoi` table if missing, saves the EOI and shows its EOInumber. Cannot be opened directly. *(planned)*
+- `index.php`: company introduction, hiring process and open jobs from the database.
+- `jobs.php`: job descriptions loaded from the `jobs` table.
+- `search.php`: job search results from the header search bar.
+- `apply.php`: application form posting to `process_eoi.php`; browser validation is disabled.
+- `process_eoi.php`: validates and sanitises the application on the server, creates the `eoi` table if missing, saves the EOI and shows its EOInumber. Cannot be opened directly.
 - `about.php`: team details and Part 1 and Part 2 contributions loaded from the `about` table. *(planned)*
-- `login.php` / `logout.php`: manager sign-in and sign-out, with a temporary lock after 3 failed attempts. *(planned)*
-- `manage.php`: login-protected HR page to list EOIs (all, by job reference, by first and/or last name), change an EOI's status, delete all EOIs for a job reference, and sort results. *(planned)*
+- `login.php` / `logout.php`: manager sign-in and sign-out, with a temporary lock after 3 failed attempts.
+- `manage.php`: login-protected HR page to list EOIs (all, by job reference, by first and/or last name), change an EOI's status, delete all EOIs for a job reference, and sort results. Linked from the footer as "Manager login".
 
 ### Shared code
 
-- `header.inc`, `nav.inc`, `footer.inc`: page parts included by every page. *(planned)*
-- `settings.php`: database host, user, password (empty) and database name. *(planned)*
-- `functions.php`: database connection, input sanitising, safe output and login check helpers. *(planned)*
+- `header.inc`, `nav.inc`, `footer.inc`: page parts included by every page. `header.inc` includes `nav.inc`, which marks the current page with `aria-current`.
+- `settings.php`: database host, user, password (empty) and database name.
+- `functions.php`: job listing output, database connection, input sanitising and safe output helpers.
+- `auth.php`: session start, login check (`require_login()`), login lockout, logout and CSRF token helpers.
 
 ### Database
 
 | Table | Purpose |
 | --- | --- |
-| `eoi` | Submitted applications: one column per apply-form field, plus `status` (New, Current, Final; default New). *(planned)* |
-| `jobs` | Job listings shown on the Jobs, Home and search pages. *(planned)* |
+| `eoi` | Submitted applications: one column per apply-form field, plus `status` (New, Current, Final; default New). Source: [`sql/apply.sql`](sql/apply.sql); the merged file also adds four sample EOIs for testing `manage.php`. |
+| `jobs` | Job listings shown on the Jobs, Home and search pages. Source: [`sql/jobs.sql`](sql/jobs.sql) |
 | `about` | Team members, fun facts and Part 1 and Part 2 contributions. Source: [`sql/about.sql`](sql/about.sql) |
 | `users` | Manager accounts: unique username, bcrypt password hash and lockout columns. Source: [`sql/users.sql`](sql/users.sql) |
 
-The per-table SQL files in `sql/` will be merged into a single `.sql` file for submission.
+All four tables are merged into one file for submission: [`sql/cos10026_web.sql`](sql/cos10026_web.sql). It drops and recreates every table, so it can be imported again safely. The per-table files are kept as each member's source.
 
 ### Assets
 
-- `styles/style.css`: shared and page-specific styling.
-- `styles/images/`: images used by the CSS (background patterns).
-- `images/`: logo, cover image and group photo.
+- `styles/styles.css`: shared and page-specific styling.
+- `img/`: logo, cover image, group photo and the background patterns used by the CSS.
 - `media/video.mp4`: brand introduction video.
 
 ## Security

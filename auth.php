@@ -1,16 +1,4 @@
 <?php
-/**
- * Manager authentication helpers (ABT-4, ABT-5, ABT-6).
- *
- * manage.php calls require_login() on its first line:
- *     require_once __DIR__ . '/auth.php';
- *     require_login();
- *
- * Kept in its own file so it does not clash with the shared functions.php.
- * Can be moved into functions.php once that file is merged.
- */
-
-// Start the session with safer cookie settings (not readable by scripts).
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'httponly' => true,
@@ -19,19 +7,13 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Lock an account for LOGIN_LOCK_MINUTES after LOGIN_MAX_ATTEMPTS wrong passwords in a row.
 const LOGIN_MAX_ATTEMPTS = 3;
 const LOGIN_LOCK_MINUTES = 5;
 
-// Session keys shared with manage.php.
 const SESSION_USER_ID  = 'manager_id';
 const SESSION_USERNAME = 'manager_username';
 
-/**
- * Connect to the database using settings.php.
- * Accepts either variable naming used in the team's branches
- * ($user/$pwd/$sql_db or $username/$password/$database) until one is agreed.
- */
+
 function auth_db(): ?mysqli
 {
     require __DIR__ . '/settings.php';
@@ -165,7 +147,7 @@ function attempt_login(string $username, string $password): string
     return $result;
 }
 
-/** Log the manager out and remove the session cookie. */
+/** log out and remove cookies*/
 function logout(): void
 {
     $_SESSION = [];

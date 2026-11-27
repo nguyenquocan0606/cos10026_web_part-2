@@ -51,7 +51,7 @@ if ($searchTerm === '') {
     <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-<?php include 'header.inc'; ?>
+<?php include __DIR__ . '/header.inc'; ?>
 
 <main class="jobs-page">
     <section class="jobs-intro" aria-labelledby="search-heading">
@@ -68,12 +68,7 @@ if ($searchTerm === '') {
     <?php displayJobListings($result); ?>
 </main>
 
-<footer class="site-footer">
-    <div class="footer-inner">
-        <p class="footer-tagline">Learn a language. Open a world.</p>
-        <p class="footer-copyright">&copy; 2026 Edbridge &mdash; a fictional company created by W3bb for the COS10026 Web Technology Project, Swinburne University of Technology.</p>
-    </div>
-</footer>
+<?php include __DIR__ . '/footer.inc'; ?>
 
 <?php
 $result->free();

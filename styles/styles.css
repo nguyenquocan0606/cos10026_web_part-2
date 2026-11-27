@@ -1121,3 +1121,138 @@ nav a[aria-current="page"] {
     border-radius: 0.75rem;
   }
 }
+
+/* Manage page (manage.php, HR managers only) */
+.manage-page > main {
+  width: min(100% - 2rem, 76rem);
+  margin-inline: auto;
+  padding-block: 2rem;
+}
+
+.manage-page h1 { font-size: clamp(2rem, 4vw, 2.75rem); margin-bottom: 0.25rem; }
+.manage-page h2 { font-size: 1.35rem; margin: 0 0 0.75rem; }
+.manage-page p { font-size: 1rem; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Feedback after an action: green for success, red for errors. */
+.manage-message {
+  padding: 0.75rem 1rem;
+  border-left: 4px solid var(--brand);
+  border-radius: 8px;
+  background: var(--brand-tint);
+}
+
+.manage-message-error {
+  border-left-color: var(--danger);
+  background: var(--danger-tint);
+}
+
+/* Filter form and delete form side by side, stacking on small screens. */
+.manage-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-block: 1.5rem 2rem;
+}
+
+.manage-panel,
+.manage-confirm {
+  flex: 1 1 20rem;
+  padding: 1.25rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--paper-raised);
+}
+
+.manage-panel:first-child { flex-grow: 2; }
+
+.manage-confirm {
+  margin-block: 1.5rem;
+  border: 2px solid var(--danger);
+}
+
+.manage-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.75rem;
+}
+
+.manage-page label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+}
+
+.manage-page main input[type="text"],
+.manage-page main select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+
+.manage-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.manage-actions input[type="text"] { flex: 1 1 8rem; width: auto; }
+
+.manage-page main button {
+  min-height: 44px;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--brand);
+  color: var(--on-brand);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.manage-page main button:hover { background: var(--brand-strong); }
+.manage-page main .manage-danger { background: var(--danger); color: var(--paper-raised); }
+.manage-page main .manage-danger:hover { background: var(--accent); }
+.manage-cancel { margin-left: 0.75rem; font-weight: 700; }
+
+/* Results table scrolls sideways instead of widening the page. */
+.manage-table-scroll { max-width: 100%; overflow-x: auto; }
+
+.manage-table {
+  width: 100%;
+  min-width: 52rem;
+  border-collapse: collapse;
+  background: var(--paper-raised);
+}
+
+.manage-table th,
+.manage-table td {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--line-strong);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.manage-table thead { background: var(--brand); color: var(--on-brand); }
+.manage-table tbody tr:nth-child(even) { background: var(--paper-sunk); }
+
+.manage-status { display: flex; gap: 0.5rem; align-items: center; }
+.manage-page main .manage-status select { width: auto; min-width: 7rem; }
+.manage-page main .manage-status button { padding-inline: 0.9rem; }
+
+.manage-empty { color: var(--ink-muted); }

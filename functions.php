@@ -137,3 +137,42 @@ function displayJobListings(mysqli_result $jobs, bool $compact = false): void
         echo '</section>';
     }
 }
+
+/*
+ * Shared helpers for every page (settings, input cleaning, safe output).
+ */
+
+/**
+ * Open a database connection using the values in settings.php.
+ * Returns null when the database cannot be reached.
+ */
+function dbConnect(): ?mysqli
+{
+    require __DIR__ . '/settings.php';
+
+    mysqli_report(MYSQLI_REPORT_OFF);
+    $conn = @new mysqli($host, $user, $pwd, $sql_db);
+    if ($conn->connect_error) {
+        error_log('Database connection failed: ' . $conn->connect_error);
+        return null;
+    }
+    $conn->set_charset('utf8mb4');
+    return $conn;
+}
+
+/** Clean one value typed by the user: trim, stripslashes, htmlspecialchars. */
+function cleanInput($value): string
+{
+    if (!is_scalar($value)) {
+        return '';
+    }
+    $value = trim((string)$value);
+    $value = stripslashes($value);
+    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+}
+
+/** Make any value safe to print inside HTML. */
+function safeOutput($value): string
+{
+    return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+}
