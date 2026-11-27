@@ -17,7 +17,7 @@ if (isset($_GET['logged_out'])) {
 }
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    $username = trim(stripslashes((string)($_POST['username'] ?? '')));
+    $username = cleanText($_POST['username'] ?? '');
     $password = (string)($_POST['password'] ?? '');
     $token = (string)($_POST['csrf_token'] ?? '');
     $usernameValue = $username;
@@ -85,28 +85,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 </head>
 
 <body class="apply-page login-page">
-  <!-- Replace this header with the shared header.inc once it is merged. -->
-  <header>
-    <div class="container">
-      <a href="index.php" class="Edbridge">
-        <span class="brand-logo"><img src="img/logo.webp" alt="" width="1024" height="1024"></span>
-        <span>Edbridge</span>
-      </a>
-      <label class="theme-switch">
-        <input type="checkbox" id="theme-toggle">
-        <span class="slider"></span>
-          Light Mode
-      </label>
-      <nav aria-label="Main">
-        <ul>
-          <li><a href="index.php">Home</a></li>
-          <li><a href="jobs.php">Jobs</a></li>
-          <li><a href="apply.php">Apply</a></li>
-          <li><a href="about.php">About us</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  <?php include __DIR__ . '/header.inc'; ?>
 
   <main>
     <h1>Manager login</h1>
@@ -114,17 +93,17 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 
     <?php if ($message !== ''): ?>
       <p class="<?php echo $messageClass; ?>" role="<?php echo $messageClass === 'login-error' ? 'alert' : 'status'; ?>">
-        <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
+        <?php echo safeOutput($message); ?>
       </p>
     <?php endif; ?>
 
     <form action="login.php" method="post" novalidate>
-      <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+      <input type="hidden" name="csrf_token" value="<?php echo safeOutput(csrf_token()); ?>">
 
       <div class="form-row">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" autocomplete="username"
-               value="<?php echo htmlspecialchars($usernameValue, ENT_QUOTES, 'UTF-8'); ?>">
+               value="<?php echo safeOutput($usernameValue); ?>">
       </div>
 
       <div class="form-row">
@@ -137,5 +116,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
       </div>
     </form>
   </main>
+
+  <?php include __DIR__ . '/footer.inc'; ?>
 </body>
 </html>

@@ -1,23 +1,21 @@
 <?php
+require_once __DIR__ . '/functions.php';
 session_start();
 
 $errors = $_SESSION['eoi_errors'] ?? [];
 $old = $_SESSION['eoi_old'] ?? [];
 unset($_SESSION['eoi_errors'], $_SESSION['eoi_old']);
 
-$escape = static function ($value) {
-    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$fieldValue = static function ($name) use ($old) {
+    return safeOutput($old[$name] ?? '');
 };
-$fieldValue = static function ($name) use ($old, $escape) {
-    return $escape($old[$name] ?? '');
-};
-$fieldError = static function ($name) use ($errors, $escape) {
+$fieldError = static function ($name) use ($errors) {
     if (empty($errors[$name])) {
         return '';
     }
 
     return '<span class="field-error" role="alert">' .
-        $escape(implode(' ', $errors[$name])) . '</span>';
+        safeOutput(implode(' ', $errors[$name])) . '</span>';
 };
 
 $selectedJob = $old['job_reference'] ?? ($_GET['job'] ?? '');
@@ -73,7 +71,7 @@ if (!is_string($selectedJob) || !preg_match('/^[A-Za-z0-9]{5}$/', $selectedJob))
         <ul>
           <?php foreach ($errors as $fieldErrors): ?>
             <?php foreach ($fieldErrors as $error): ?>
-              <li><?= $escape($error) ?></li>
+              <li><?= safeOutput($error) ?></li>
             <?php endforeach; ?>
           <?php endforeach; ?>
         </ul>
@@ -89,7 +87,7 @@ if (!is_string($selectedJob) || !preg_match('/^[A-Za-z0-9]{5}$/', $selectedJob))
           type="text"
           id="job_reference"
           name="job_reference"
-          value="<?= $escape($selectedJob) ?>"
+          value="<?= safeOutput($selectedJob) ?>"
           title="Enter exactly 5 alphanumeric characters."
           >
         <?= $fieldError('job_reference') ?>

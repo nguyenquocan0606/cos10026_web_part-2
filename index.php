@@ -1,35 +1,26 @@
 
 <?php
-require_once __DIR__ . '/settings.php';
-
-// Escape output before displaying database values in HTML.
-function h($value) {
-    return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
-}
+require_once __DIR__ . '/functions.php';
 
 $jobs = [];
-$loadError = '';
+$loadError = 'Job listings are currently unavailable.';
 
-try {
-    // Connect to the database.
-    $conn = new mysqli($host, $user, $pwd, $sql_db);
-    $conn->set_charset('utf8mb4');
-
+$conn = dbConnect();
+if ($conn) {
     // Retrieve every job from the database.
-    $sql = "SELECT job_reference, category, title, tagline
-            FROM jobs
-            ORDER BY job_reference ASC";
-
-    $result = $conn->query($sql);
-
-    while ($row = $result->fetch_assoc()) {
-        $jobs[] = $row;
+    $result = $conn->query(
+        'SELECT job_reference, category, title, tagline
+         FROM jobs
+         ORDER BY job_reference ASC'
+    );
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $jobs[] = $row;
+        }
+        $result->free();
+        $loadError = '';
     }
-
     $conn->close();
-
-} catch (mysqli_sql_exception $e) {
-    $loadError = 'Job listings are currently unavailable.';
 }
 ?>
 
@@ -127,7 +118,7 @@ try {
           <!-- DYNAMIC JOB CARDS -->
           <div class="a1_job_container">
             <?php if ($loadError !== ''): ?>
-              <p><?= h($loadError) ?></p>
+              <p><?= safeOutput($loadError) ?></p>
             <?php elseif (count($jobs) > 0): ?>
               <?php foreach ($jobs as $index => $job): ?>
                 <?php
@@ -144,13 +135,13 @@ try {
                 <div class="<?= $cardClass ?>">
                   <span class="a1_type_job">
                     <?= sprintf('%02d', $index + 1) ?>
-                    / <?= h($category) ?>
+                    / <?= safeOutput($category) ?>
                   </span>
                   <p class="a1_name_job">
-                    <?= h($job['title']) ?>
+                    <?= safeOutput($job['title']) ?>
                   </p>
                   <p class="a1_detail">
-                    <?= h($job['tagline']) ?>
+                    <?= safeOutput($job['tagline']) ?>
                   </p>
                   <a href="jobs.php" class="a1_explore">
                     Explore role

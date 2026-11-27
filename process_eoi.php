@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/functions.php';
 session_start();
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
@@ -6,13 +7,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
     exit;
 }
 
-$clean = static function ($value) {
-    if (!is_scalar($value)) {
-        return '';
-    }
-
-    return stripslashes(trim((string) $value));
-};
 $errors = [];
 $addError = static function ($field, $message) use (&$errors) {
     $errors[$field][] = $message;
@@ -34,14 +28,14 @@ $fieldNames = [
 ];
 $old = [];
 foreach ($fieldNames as $field) {
-    $old[$field] = $clean($_POST[$field] ?? '');
+    $old[$field] = cleanText($_POST[$field] ?? '');
 }
 
 $postedSkills = $_POST['skills'] ?? [];
 $old['skills'] = [];
 if (is_array($postedSkills)) {
     foreach ($postedSkills as $skill) {
-        $old['skills'][] = $clean($skill);
+        $old['skills'][] = cleanText($skill);
     }
 }
 
@@ -111,17 +105,9 @@ if (!$validSkills) {
 
 $mysqli = null;
 if (preg_match('/^[A-Z0-9]{5}$/', $old['job_reference'])) {
-    mysqli_report(MYSQLI_REPORT_OFF);
-    $mysqli = new mysqli('127.0.0.1', 'root', '', 'cos10026_web');
-    if ($mysqli->connect_error) {
-        error_log('EOI database connection failed: ' . $mysqli->connect_error);
+    $mysqli = dbConnect();
+    if (!$mysqli) {
         $addError('_form', 'The application database is unavailable. Please try again later.');
-        $mysqli = null;
-    } elseif (!$mysqli->set_charset('utf8mb4')) {
-        error_log('Could not set EOI database character set: ' . $mysqli->error);
-        $addError('_form', 'The application could not be processed. Please try again later.');
-        $mysqli->close();
-        $mysqli = null;
     } else {
         $jobQuery = $mysqli->prepare('SELECT job_reference FROM jobs WHERE job_reference = ?');
         if (!$jobQuery) {
@@ -243,9 +229,6 @@ $insert->close();
 $mysqli->close();
 unset($_SESSION['eoi_errors'], $_SESSION['eoi_old']);
 
-$escape = static function ($value) {
-    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
-};
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -259,8 +242,8 @@ $escape = static function ($value) {
   <main>
     <h1>Application received</h1>
     <p>Your Expression of Interest was submitted successfully.</p>
-    <p><strong>EOInumber:</strong> <?= $escape($eoiNumber) ?></p>
-    <p><strong>Street address:</strong> <?= $escape($old['street_address']) ?></p>
+    <p><strong>EOInumber:</strong> <?= safeOutput($eoiNumber) ?></p>
+    <p><strong>Street address:</strong> <?= safeOutput($old['street_address']) ?></p>
     <p><a href="apply.php">Submit another application</a></p>
   </main>
 </body>

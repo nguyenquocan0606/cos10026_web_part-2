@@ -3,12 +3,6 @@
  * Shared job-listing functions for jobs.php, search.php and index.php.
  */
 
-/** Escape database values before placing them in HTML. */
-function jobEscape($value): string
-{
-    return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
-}
-
 /**
  * Convert the three text-list database fields into individual HTML list items.
  * Both newline-separated and semicolon-separated values are supported.
@@ -34,7 +28,7 @@ function displayJobListItems($value): void
         if (is_scalar($item)) {
             $item = trim((string)$item);
             if ($item !== '') {
-                echo '<li>' . jobEscape($item) . '</li>';
+                echo '<li>' . safeOutput($item) . '</li>';
             }
         }
     }
@@ -62,15 +56,15 @@ function displayJobListings(mysqli_result $jobs, bool $compact = false): void
         $category = (string)($job['category'] ?? '');
         $tagline = (string)($job['tagline'] ?? '');
         $description = (string)($job['description'] ?? '');
-        $safeReference = jobEscape($reference);
-        $safeTitle = jobEscape($title);
-        $safeCategory = jobEscape($category);
-        $safeTagline = jobEscape($tagline);
-        $safeDescription = jobEscape($description);
+        $safeReference = safeOutput($reference);
+        $safeTitle = safeOutput($title);
+        $safeCategory = safeOutput($category);
+        $safeTagline = safeOutput($tagline);
+        $safeDescription = safeOutput($description);
         $jobId = 'job-' . preg_replace('/[^A-Za-z0-9_-]/', '-', $reference);
-        $safeJobId = jobEscape($jobId);
+        $safeJobId = safeOutput($jobId);
         $applyUrl = 'apply.php?job=' . rawurlencode($reference);
-        $safeApplyUrl = jobEscape($applyUrl);
+        $safeApplyUrl = safeOutput($applyUrl);
 
         if ($compact) {
             echo '<article class="job-card" id="' . $safeJobId . '">';
@@ -110,11 +104,11 @@ function displayJobListings(mysqli_result $jobs, bool $compact = false): void
         echo '<h3 id="' . $safeJobId . '-details">Role details</h3>';
         echo '<dl class="job-details">';
         echo '<dt>Salary</dt><dd>AUD $' . number_format($salaryMin) . '–$' . number_format($salaryMax) . ' per year</dd>';
-        echo '<dt>Experience level</dt><dd>' . jobEscape($job['experience_level'] ?? '') . '</dd>';
-        echo '<dt>Reports to</dt><dd>' . jobEscape($job['reports_to'] ?? '') . '</dd>';
-        echo '<dt>Employment type</dt><dd>' . jobEscape($job['employment_type'] ?? '') . '</dd>';
-        echo '<dt>Work arrangement</dt><dd>' . jobEscape($job['work_arrangement'] ?? '') . '</dd>';
-        echo '<dt>Location</dt><dd>' . jobEscape($job['location'] ?? '') . '</dd>';
+        echo '<dt>Experience level</dt><dd>' . safeOutput($job['experience_level'] ?? '') . '</dd>';
+        echo '<dt>Reports to</dt><dd>' . safeOutput($job['reports_to'] ?? '') . '</dd>';
+        echo '<dt>Employment type</dt><dd>' . safeOutput($job['employment_type'] ?? '') . '</dd>';
+        echo '<dt>Work arrangement</dt><dd>' . safeOutput($job['work_arrangement'] ?? '') . '</dd>';
+        echo '<dt>Location</dt><dd>' . safeOutput($job['location'] ?? '') . '</dd>';
         echo '</dl></section>';
 
         echo '<section aria-labelledby="' . $safeJobId . '-duties">';
@@ -160,15 +154,22 @@ function dbConnect(): ?mysqli
     return $conn;
 }
 
-/** Clean one value typed by the user: trim, stripslashes, htmlspecialchars. */
-function cleanInput($value): string
+/**
+ * Clean one value typed by the user: trim and stripslashes.
+ * Use this before validating or saving; escape later with safeOutput().
+ */
+function cleanText($value): string
 {
     if (!is_scalar($value)) {
         return '';
     }
-    $value = trim((string)$value);
-    $value = stripslashes($value);
-    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+    return stripslashes(trim((string)$value));
+}
+
+/** Clean one value typed by the user and make it HTML-safe: trim, stripslashes, htmlspecialchars. */
+function cleanInput($value): string
+{
+    return safeOutput(cleanText($value));
 }
 
 /** Make any value safe to print inside HTML. */

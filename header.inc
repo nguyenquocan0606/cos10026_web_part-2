@@ -29,7 +29,7 @@
                     placeholder="Search jobs..."
                     value="<?php
                         echo isset($_GET['q']) && is_string($_GET['q'])
-                            ? htmlspecialchars($_GET['q'], ENT_QUOTES, 'UTF-8')
+                            ? safeOutput($_GET['q'])
                             : '';
                     ?>"
                 >
