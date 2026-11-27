@@ -9,7 +9,7 @@ $navLinks = [
     'index.php'  => 'Home',
     'jobs.php'   => 'Jobs',
     'apply.php'  => 'Apply',
-    'about.html' => 'About us',
+    'about.php' => 'About us',
 ];
 ?>
         <nav aria-label="Main">

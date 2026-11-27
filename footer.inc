@@ -24,7 +24,7 @@
           <ul>
             <li><a href="jobs.php">Explore jobs</a></li>
             <li><a href="apply.php">Apply for a role</a></li>
-            <li><a href="about.html#members-heading">Meet the team</a></li>
+            <li><a href="about.php#members-heading">Meet the team</a></li>
             <li><a href="mailto:careers@edbridge.example">careers@edbridge.example</a></li>
             <li><a href="manage.php">Manager login</a></li>
           </ul>

@@ -163,7 +163,7 @@ try {
             <?php endif; ?>
 
           </div>
-          <a class="a1_meet_team" href="about.html">
+          <a class="a1_meet_team" href="about.php">
             Meet the team
           </a>
         </div>
