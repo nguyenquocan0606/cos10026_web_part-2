@@ -59,34 +59,7 @@ if (!is_string($selectedJob) || !preg_match('/^[A-Za-z0-9]{5}$/', $selectedJob))
 </head>
 
 <body class="apply-page">
-  <header>
-    <div class="container">
-      <a href="index.html" class="Edbridge">
-        <span class="brand-logo"><img src="img/logo.webp" alt="" width="1024" height="1024"></span>
-        <span>Edbridge</span>
-      </a>
-      <label class="theme-switch">
-        <input type="checkbox" id="theme-toggle">
-        <span class="slider"></span>
-          Light Mode
-      </label>
-      <form class="a1_search" action="jobs.html" method="get" role="search">
-        <label for="a1_search_input">Search jobs</label>
-        <div class="a1_search_row">
-          <input type="search" id="a1_search_input" name="q" placeholder="Search jobs...">
-          <button type="submit">Search</button>
-        </div>
-      </form>
-      <nav aria-label="Main">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="jobs.html">Jobs</a></li>
-          <li><a href="apply.php" aria-current="page">Apply</a></li>
-          <li><a href="about.html">About us</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+<?php include __DIR__ . '/header.inc'; ?>
 
   <!-- Main content -->
   <main>
@@ -331,43 +304,6 @@ if (!is_string($selectedJob) || !preg_match('/^[A-Za-z0-9]{5}$/', $selectedJob))
     </form>
   </main>
 
-    <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-columns">
-        <div>
-          <a href="index.html" class="Edbridge">
-            <span class="brand-logo"><img src="img/logo.webp" alt="" width="1024" height="1024" loading="lazy"></span>
-            <span>Edbridge</span>
-          </a>
-          <p class="footer-tagline">Learn a language. Open a world.</p>
-        </div>
-
-        <section aria-labelledby="project-links-heading">
-          <h3 id="project-links-heading">Project</h3>
-          <ul>
-            <li><a href="https://soulknightprequel15.atlassian.net/jira/software/projects/CGW/boards/3?filter=&amp;groupBy=none">Jira board</a></li>
-            <li><a href="https://github.com/nguyenquocan0606/cos10026_web">GitHub repository</a></li>
-            <li><a href="https://nguyenquocan0606.github.io/cos10026_web/">Live site</a></li>
-          </ul>
-        </section>
-
-        <section aria-labelledby="quick-links-heading">
-          <h3 id="quick-links-heading">Quick links</h3>
-          <ul>
-            <li><a href="jobs.html">Explore jobs</a></li>
-            <li><a href="apply.php">Apply for a role</a></li>
-            <li><a href="about.html#members-heading">Meet the team</a></li>
-          </ul>
-        </section>
-      </div>
-
-      <section aria-labelledby="credits-heading">
-        <h3 id="credits-heading">GenAI sources and credits</h3>
-        <p><a href="https://openai.com/codex/">OpenAI Codex</a> assisted with drafting and editing webpage content and CSS logo cropping. Team details and task information were supplied by W3bb. The <a href="img/logo.webp">Edbridge logo and brand intro video</a> was generated using Gemini Argon and supplied by the team.</p>
-      </section>
-
-      <p class="footer-copyright">&copy; 2026 Edbridge &mdash; a fictional company created by W3bb for the COS10026 Web Technology Project, Swinburne University of Technology.</p>
-    </div>
-  </footer>
+<?php include __DIR__ . '/footer.inc'; ?>
 </body>
 </html>

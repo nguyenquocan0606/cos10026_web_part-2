@@ -38,39 +38,7 @@
         </form>
 
         <!-- Navigation -->
-        <?php
-        $currentPage = basename($_SERVER['PHP_SELF']);
-        ?>
-
-        <nav aria-label="Main">
-            <ul>
-                <li>
-                    <a href="index.php"
-                        <?php if ($currentPage == 'index.php') echo 'aria-current="page"'; ?>>
-                        Home
-                    </a>
-                </li>
-
-                <li>
-                    <a href="jobs.php"
-                        <?php if ($currentPage == 'jobs.php' || $currentPage == 'search.php') echo 'aria-current="page"'; ?>>
-                        Jobs
-                    </a>
-                </li>
-
-                <li>
-                    <a href="apply.html">
-                        Apply
-                    </a>
-                </li>
-
-                <li>
-                    <a href="about.html">
-                        About us
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <?php include __DIR__ . '/nav.inc'; ?>
 
     </div>
 </header>
